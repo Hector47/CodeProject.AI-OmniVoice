@@ -1,0 +1,143 @@
+{
+  "Modules": {
+    "OmniVoiceTTS": {
+      "Name": "OmniVoice TTS",
+      "Version": "1.0.0",
+
+      "PublishingInfo": {
+        "Description": "Provides multilingual text-to-speech synthesis via OmniVoice, supporting 600+ languages with voice cloning, voice design, and auto voice modes.",
+        "Category": "Text",
+        "Stack": "Python, PyTorch",
+        "License": "Apache-2.0",
+        "LicenseUrl": "https://opensource.org/licenses/Apache-2.0",
+        "Author": "Hector47",
+        "Homepage": "https://github.com/Hector47/CodeProject.AI-OmniVoice",
+        "BasedOn": "OmniVoice",
+        "BasedOnUrl": "https://github.com/k2-fsa/OmniVoice"
+      },
+
+      "LaunchSettings": {
+        "AutoStart": true,
+        "FilePath": "omnivoice_adapter.py",
+        "Runtime": "python3.9",
+        "RuntimeLocation": "Local",
+        "PostStartPauseSecs": 5,
+        "Queue": "omnivoicetts_queue",
+        "Parallelism": 1
+      },
+
+      "EnvironmentVariables": {
+        "APPDIR": "%CURRENT_MODULE_PATH%",
+        "MODELS_DIR": "%CURRENT_MODULE_PATH%/assets",
+        "MODEL_NAME": "k2-fsa/OmniVoice",
+        "NUM_STEPS": "32",
+        "SPEED": "1.0",
+        "USE_CUDA": "True"
+      },
+
+      "GpuOptions": {
+        "InstallGPU": true,
+        "EnableGPU": true,
+        "AcceleratorDeviceName": null,
+        "HalfPrecision": "enable"
+      },
+
+      "InstallOptions": {
+        "Platforms": ["windows", "linux", "macos", "macos-arm64"],
+        "ModuleReleases": [
+          {
+            "ModuleVersion": "1.0.0",
+            "ServerVersionRange": ["2.8.0", ""],
+            "ReleaseDate": "2025-04-05",
+            "ReleaseNotes": "Initial release"
+          }
+        ]
+      },
+
+      "UIElements": {
+        "Menus": [
+          {
+            "Label": "Steps",
+            "Options": [
+              { "Label": "16 (faster)", "Setting": "NUM_STEPS", "Value": "16" },
+              { "Label": "32 (default)", "Setting": "NUM_STEPS", "Value": "32" },
+              { "Label": "64 (higher quality)", "Setting": "NUM_STEPS", "Value": "64" }
+            ]
+          }
+        ]
+      },
+
+      "RouteMaps": [
+        {
+          "Name": "Text to Speech",
+          "Route": "sound/speak",
+          "Method": "POST",
+          "Command": "speak",
+          "Description": "Synthesizes speech from text using OmniVoice. Supports three modes: voice cloning (provide ref_audio and optional ref_text), voice design (provide instruct with attributes like 'female, low pitch, british accent'), or auto voice (just provide text).",
+          "Inputs": [
+            {
+              "Name": "text",
+              "Type": "Text",
+              "Description": "The text to be converted to speech."
+            },
+            {
+              "Name": "ref_audio",
+              "Type": "File",
+              "Description": "(Optional) Reference audio file for voice cloning. If provided, the model will clone the voice from this audio."
+            },
+            {
+              "Name": "ref_text",
+              "Type": "Text",
+              "Description": "(Optional) Transcription of the reference audio. If omitted and ref_audio is provided, Whisper ASR will be used to auto-transcribe it."
+            },
+            {
+              "Name": "instruct",
+              "Type": "Text",
+              "Description": "(Optional) Voice design attributes (e.g., 'female, low pitch, british accent'). Used when no ref_audio is provided and you want to specify voice characteristics."
+            },
+            {
+              "Name": "speed",
+              "Type": "Float",
+              "DefaultValue": 1.0,
+              "MinValue": 0.5,
+              "MaxValue": 2.0,
+              "Description": "Speed factor for speech generation. Values > 1.0 are faster, < 1.0 are slower."
+            }
+          ],
+          "Outputs": [
+            {
+              "Name": "success",
+              "Type": "Boolean",
+              "Description": "True if speech was successfully synthesized."
+            },
+            {
+              "Name": "audio",
+              "Type": "Base64ImageData",
+              "Description": "The synthesized audio as a base64-encoded WAV file."
+            },
+            {
+              "Name": "mode",
+              "Type": "String",
+              "Description": "The synthesis mode used: 'voice_cloning', 'voice_design', or 'auto_voice'."
+            },
+            {
+              "Name": "inferenceMs",
+              "Type": "Integer",
+              "Description": "Time taken (ms) to perform the TTS inference."
+            },
+            {
+              "Name": "processMs",
+              "Type": "Integer",
+              "Description": "Total time taken (ms) to process the request."
+            },
+            {
+              "Name": "message",
+              "Type": "String",
+              "Description": "A descriptive message about the inference outcome."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
