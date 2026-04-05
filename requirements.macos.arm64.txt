@@ -1,0 +1,14 @@
+# OmniVoice TTS – macOS (Apple Silicon) requirements
+#
+# Selected on macOS arm64 hardware (M1/M2/M3/M4).
+# PyTorch for Apple Silicon uses the MPS backend – no CUDA wheels needed.
+
+# Deep-learning runtime (CPU + MPS)
+torch==2.8.0
+torchaudio==2.8.0
+
+# OmniVoice TTS library
+omnivoice
+
+# CodeProject.AI module runner SDK
+codeproject-ai-sdk

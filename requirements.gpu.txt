@@ -1,0 +1,18 @@
+# OmniVoice TTS – NVIDIA GPU (CUDA) requirements
+#
+# Selected when running on Linux/Windows with a CUDA-capable GPU.
+# A specific CUDA-enabled PyTorch wheel is chosen here to ensure
+# compatibility with OmniVoice.
+
+# Deep-learning runtime with CUDA support
+--extra-index-url https://download.pytorch.org/whl/cu128
+torch==2.8.0+cu128
+
+# OmniVoice TTS library
+omnivoice
+
+# CodeProject.AI module runner SDK
+codeproject-ai-sdk
+
+# Audio I/O
+torchaudio==2.8.0+cu128

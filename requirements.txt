@@ -1,0 +1,13 @@
+# OmniVoice TTS – Python dependencies
+#
+# Core deep-learning runtime is listed in requirements.*.txt files so the
+# correct CUDA/CPU build of PyTorch is selected for each platform.
+
+# OmniVoice TTS library
+omnivoice
+
+# CodeProject.AI module runner SDK
+codeproject-ai-sdk
+
+# Audio I/O (must align with the PyTorch version installed separately)
+torchaudio
